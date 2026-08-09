@@ -2,6 +2,7 @@
 
 import { Flame, Calendar, Trophy, Target, TrendingUp, Clock, Moon, User, Award, ArrowRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { ThemeSwitcher } from '@/components/ThemeSwitcher';
 
 // Mock data with fallback
 const mockDashboardData = {
@@ -77,15 +78,18 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 pb-24">
-      {/* Header with User Greeting */}
+      {/* Header with Theme Switcher and User Greeting */}
       <div className="px-6 pt-12 pb-6">
-        <div className="flex items-center gap-4 mb-4">
-          <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-lg font-bold shadow-lg shadow-orange-500/50">
-            {user?.avatar || "🧑‍💻"}
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold">Welcome back, {user?.name || "Developer"}!</h1>
-            <p className="text-slate-400 text-sm">Let's continue your journey</p>
+        <div className="flex items-center justify-between mb-4">
+          <ThemeSwitcher />
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-lg font-bold shadow-lg shadow-orange-500/50">
+              {user?.avatar || "🧑‍💻"}
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold">Welcome back, {user?.name || "Developer"}!</h1>
+              <p className="text-slate-400 text-sm">Let's continue your journey</p>
+            </div>
           </div>
         </div>
       </div>
