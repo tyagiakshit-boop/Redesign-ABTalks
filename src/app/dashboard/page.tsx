@@ -34,9 +34,10 @@ export default function Dashboard() {
     const fetchDashboardData = async () => {
       try {
         // Try to fetch from backend
-        const response = await fetch('http://localhost:8080/api/dashboard');
+        const response = await fetch('http://localhost:8080/api/v1/student/dashboard');
         if (!response.ok) throw new Error('Backend not available');
         const apiData = await response.json();
+        console.log("🚀 DATA FROM JAVA:", apiData);
         setData(apiData);
       } catch (error) {
         // Use mock data as fallback
@@ -71,7 +72,8 @@ export default function Dashboard() {
     );
   }
 
-  const { user } = data;
+  const user = data?.user || data || {};
+  const todayTask = user?.todayTask || {};
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 pb-24">
@@ -79,10 +81,10 @@ export default function Dashboard() {
       <div className="px-6 pt-12 pb-6">
         <div className="flex items-center gap-4 mb-4">
           <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-lg font-bold shadow-lg shadow-orange-500/50">
-            {user.avatar}
+            {user?.avatar || "🧑‍💻"}
           </div>
           <div>
-            <h1 className="text-2xl font-bold">Welcome back, {user.name}!</h1>
+            <h1 className="text-2xl font-bold">Welcome back, {user?.name || "Developer"}!</h1>
             <p className="text-slate-400 text-sm">Let's continue your journey</p>
           </div>
         </div>
@@ -153,12 +155,12 @@ export default function Dashboard() {
         <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl p-5">
           <div className="flex items-center justify-between mb-3">
             <span className="text-sm font-medium">Overall Progress</span>
-            <span className="text-sm text-orange-400 font-semibold">{user.progressPercentage}% Complete</span>
+            <span className="text-sm text-orange-400 font-semibold">{user?.progressPercentage || 0}% Complete</span>
           </div>
           <div className="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
             <div 
               className="bg-gradient-to-r from-orange-500 to-orange-600 h-full rounded-full transition-all duration-500"
-              style={{ width: `${user.progressPercentage}%` }}
+              style={{ width: `${user?.progressPercentage || 0}%` }}
             />
           </div>
           <div className="mt-2 text-xs text-slate-400">
@@ -203,24 +205,24 @@ export default function Dashboard() {
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <div className="inline-block px-3 py-1 bg-orange-500/20 text-orange-400 text-xs font-semibold rounded-full mb-3">
-                  Day {user.todayTask.day}
+                  Day {todayTask?.day || 1}
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{user.todayTask.title}</h3>
+                <h3 className="text-lg font-semibold mb-2">{todayTask?.title || "Loading Title..."}</h3>
                 <p className="text-sm text-slate-400 mb-4">
-                  {user.todayTask.description}
+                  {todayTask?.description || "Loading description..."}
                 </p>
                 <div className="flex items-center gap-4 text-sm">
-                  <span className="text-slate-400">Difficulty: <span className="text-yellow-400 font-medium">{user.todayTask.difficulty}</span></span>
-                  <span className="text-slate-400">Points: <span className="text-orange-400 font-medium">{user.todayTask.points}</span></span>
+                  <span className="text-slate-400">Difficulty: <span className="text-yellow-400 font-medium">{todayTask?.difficulty || "-"}</span></span>
+                  <span className="text-slate-400">Points: <span className="text-orange-400 font-medium">{todayTask?.points || 0}</span></span>
                 </div>
               </div>
             </div>
             
             <a
-              href={`/day/${user.todayTask.day}`}
+              href={`/day/${todayTask?.day || 1}`}
               className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl font-semibold shadow-lg shadow-orange-500/50 hover:shadow-xl hover:shadow-orange-500/60 transition-all"
             >
-              Start Day {user.todayTask.day}
+              Start Day {todayTask?.day || 1}
               <ArrowRight className="w-4 h-4" />
             </a>
           </div>
